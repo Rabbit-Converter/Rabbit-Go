@@ -18,7 +18,8 @@ go get github.com/Rabbit-Converter/Rabbit-Go
 ```
 
 And then you can use like
-```
+
+```go
 // You can edit this code!
 // Click here and start typing.
 package main
