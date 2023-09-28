@@ -2,16 +2,17 @@ package rabbit
 
 import (
 	"encoding/json"
+
 	"github.com/dlclark/regexp2"
 )
 
 type RuleStruct struct {
-    From	string
-    To	string
+	From string
+	To   string
 }
 
-func Uni2zg(str string) string  {
-	unizgRule :=`[
+func Uni2zg(str string) string {
+	unizgRule := `[
     {
         "from": "\u1004\u103a\u1039",
         "to": "\u1064"
@@ -331,11 +332,11 @@ func Uni2zg(str string) string  {
 ]
 `
 
-	return replaceRule(unizgRule,str)
+	return replaceRule(unizgRule, str)
 }
 
-func Zg2uni(str string) string  {
-	zguniRule :=`[
+func Zg2uni(str string) string {
+	zguniRule := `[
     {
         "from" : "([\u102D\u102E\u103D\u102F\u1037\u1095])\\1+",
         "to" : "$1"
@@ -810,24 +811,23 @@ func Zg2uni(str string) string  {
     }
 ]`
 
-	return replaceRule(zguniRule,str)
+	return replaceRule(zguniRule, str)
 }
 
-func replaceRule(ruleJson string,output string) string {
-	
+func replaceRule(ruleJson string, output string) string {
 	var rules []RuleStruct
 	json.Unmarshal([]byte(ruleJson), &rules)
-	var re = regexp2.MustCompile("",0)
 	text := output
-	for i := range rules {
-		re = regexp2.MustCompile(rules[i].From,1)
-		res, err := re.Replace(text, rules[i].To,0,-1)
+	for _, rule := range rules {
+		re := regexp2.MustCompile(rule.From, 1)
+		res, err := re.Replace(text, rule.To, 0, -1)
 		text = res
 		if err != nil {
 			//nothing to do
-		} 
+			continue
+		}
 	}
-	
+
 	return text
 
 }
